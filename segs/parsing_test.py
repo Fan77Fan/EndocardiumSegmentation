@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
 
 
-# index = 1
-# zslice = 100
+# index = 3
+# zslice = 140
 
 # def test_parse_contour_file(filename):
 
@@ -59,7 +59,8 @@ if __name__ == '__main__':
 
 # img, contour = parse_data(index=index, zslice=zslice)
 # data_list = compile_all_data()
-
+#
+# import matplotlib.pyplot as plt
 # plt.figure()
 # plt.subplot(1,2,1)
 # plt.imshow(img)

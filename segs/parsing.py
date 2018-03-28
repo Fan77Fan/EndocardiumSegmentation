@@ -138,8 +138,8 @@ def compile_all_data():
     """
 
     image_all = []
-    for i in range(1, 5+1):
-        for j in range(1, 260+1):
+    for i in range(1, 5+1):  # there are five folders in our dataset
+        for j in range(1, 260+1):   # the maximal zslice is 260
             img, contour = parse_data(index=i, zslice=j)
             if contour is not None:
                 image_all.append((i, j))

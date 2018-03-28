@@ -14,7 +14,7 @@ from parsing import compile_all_data
 def main():
     time_start = time.time()
 
-    n_epoch = 100
+    n_epoch = 20
     n_step_train = 100
     batch_size = 8
 
