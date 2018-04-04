@@ -10,7 +10,7 @@ The first change was to add 'contour_type' argument to function __parse_data__ i
 
 The second change is to add __parse_data_both__ function to fulfill the functionality of outputting three data types at the same time, meaning (image, in-contour, out-contour)
 
-The last change is to add 'contour_type' input in __compile_all_data__ and __main__ where __parse_data__ function is called.
+The last change is to add 'contour_type' input in __compile_all_data__, __setup_generator__, and __main__ where __parse_data__ function is called.
 
 
 ### Part 2: Heuristic LV Segmentation approaches
@@ -19,13 +19,13 @@ The last change is to add 'contour_type' input in __compile_all_data__ and __mai
 
 First, we design a metric called error percentage to measure how accurate the i-contour estimation is. It is defined as the number of misclassification pixels over total number of pixels inside the region of interest, namely o-contour mask.
 
-Eq.1: error_pct = N_error / N_total 
+**Eq.1: error_pct = N_error / N_total **
 
 Given an arbitrary threshold T to classify myocardium and blood pool for each image, we can calculate the error percentage associated with that threshold T. Hence, given an image and knowing the ground truth classification of the two classes, we can calculate a curve error_pct(T) as a function of T, and calculate the minimal error percentage. This is a theoretical lower bound of error percentage, namely, the best possible solution we can get using a single thresholding scheme.
 
-Eq.2: error_pct_best = min( error_pct(T) )
+**Eq.2: error_pct_best = min( error_pct(T) )**
 
-To give an example (__experiment_threshold.py__), we select the data pair #2 (SCD0000201,SC-HF-I-2) at slice 120. This is an illustration of images and masks for myocardium and blood pool:
+To give an example (__experiment_threshold.py__), we select the data pair #2 (SCD0000201, SC-HF-I-2) at slice 120. This is an illustration of images and masks for myocardium and blood pool:
   ![Alt text](segs/model/example_masks_gt.png?raw=true "Title")
 
 This is an illustration of histograms of the two classes and the error percentage curve as a function of threshold T. The best possible error percentage is 18% in this case.
@@ -34,7 +34,7 @@ This is an illustration of histograms of the two classes and the error percentag
 We also tried a simple thresholding scheme using Otsu's method (https://en.wikipedia.org/wiki/Otsu%27s_method), implemented using toolkit **skimage.filters.threshold_otsu**. The method finds a threshold that minimizes a weighted sum of intra-class variance. As in this example, the error percentage is 29%. A result of this method is illustrated here:
   ![Alt text](segs/model/example_masks_otsu.png?raw=true "Title")
 
-For a final comparison, we computed the error percentage in all images, both the theoretical lower bound __error_pct_best__ and the error percentage from the Otsu method. The result is 
+For a final comparison (__main_threshold.py__), we computed the error percentage in all images, both the theoretical lower bound __error_pct_best__ and the error percentage from the Otsu method. The result is 
 ```
 mean best error percentage is 0.120835845404
 mean error percentage using Otsu algorithm is 0.345768146028
