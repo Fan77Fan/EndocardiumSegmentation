@@ -1,4 +1,4 @@
-## EndocardiumSegmentation
+## EndocardiumSegmentation phase 1
 Segmentation of endocardium in 2D MR images
 
 
