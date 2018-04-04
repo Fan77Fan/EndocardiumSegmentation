@@ -8,7 +8,7 @@ Segmentation of endocardium in 2D MR images
 
 The first change was to add 'contour_type' argument to function __parse_data__ in order to control whether the function outputs a pair of (image, in-contour) or (image, out-contour). The argument value is default to 'in' in order to add compatibility with codes using the previous version where 'contour_type' input is absent.
 
-The second change is to add __parse_data_both__ function to fulfill the functionality of outputting three data types at the same time, meaning (image, in-contour, out-contour)
+The second change is to add __parse_data_both__ function to fulfill the functionality of outputting three data types at the same time, meaning (image, in-contour, out-contour). This function is only used in the part 2 experimentations (__experiment_threshold.py__ and __main_threshold.py__), but not in the part 1 machine learning pipeline (__main.py__).
 
 The last change is to add 'contour_type' input in __compile_all_data__, __setup_generator__, and __main__ where __parse_data__ function is called.
 
