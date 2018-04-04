@@ -26,7 +26,8 @@ def main():
 
     n_class = 2  # number of classes for classification
 
-    data_list = compile_all_data()  # a list feasible pairs (index, zslize)
+    contour_type = 'out'
+    data_list = compile_all_data(contour_type=contour_type)  # a list feasible pairs (index, zslize)
 
     # -------------------------------------------------------------------- #
     model = construct_model(input_size=img_size, n_class=n_class)
@@ -38,7 +39,7 @@ def main():
     plot_model(model, to_file=resultpath+'architecture'+'.png', show_shapes=True)
 
     model_callbacks = construct_callbacks(result_outputdir=resultpath, p_es=p_es)
-    model_generator = generator_data(batch_size=batch_size, image_size=img_size, data_pool=data_list)
+    model_generator = generator_data(batch_size=batch_size, image_size=img_size, data_pool=data_list, contour_type=contour_type)
     model.fit_generator(generator=model_generator,
                         steps_per_epoch=n_step_train, epochs=n_epoch,
                         callbacks=model_callbacks)
