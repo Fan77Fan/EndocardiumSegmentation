@@ -96,13 +96,56 @@ def link_file(index):
     return None, None
 
 
-def parse_data(index, zslice):
+# TODO: separate file exist testing and reading
+def parse_data(index, zslice, contour_type='in'):
     """ return the a pair of 2D image and its contour
 
-    :param index:       the index of files (e.g. 1, 2, 3, 4, 5)
-    :param zslice:      the number of slice in z axis
-    :return:            if (index, zslice) is feasible, return (image, boolean mask);
-                        if not feasible, return (None, None).
+    :param index:           the index of files (e.g. 1, 2, 3, 4, 5)
+    :param zslice:          the number of slice in z axis
+    :param contour_type:    type of contour to output ('in' or 'out')
+    :return:                if (index, zslice) is feasible, return (image, boolean mask);
+                            if not feasible, return (None, None).
+    """
+
+    patient_id, original_id = link_file(index)
+    if patient_id and original_id is not None:
+        try:
+            dicom_datapath = 'final_data/dicoms/' + patient_id + '/'
+            dicom_filename = str(zslice) + '.dcm'
+            temp_dicom_file = dicom_datapath + dicom_filename
+            temp_dicom_dct = parse_dicom_file(temp_dicom_file)
+            temp_img = temp_dicom_dct['pixel_data']
+            temp_size = temp_img.shape
+
+            if contour_type is 'in':
+                contour_datapath = 'final_data/contourfiles/' + original_id + '/i-contours/'
+                contour_filename = 'IM-0001-' + "%04d" % zslice + '-icontour-manual.txt'
+                temp_contour_file = contour_datapath + contour_filename
+                temp_coord_list = parse_contour_file(temp_contour_file)
+                contour = poly_to_mask(polygon=temp_coord_list, width=temp_size[0], height=temp_size[1])
+            elif contour_type is 'out':
+                contour_datapath = 'final_data/contourfiles/' + original_id + '/o-contours/'
+                contour_filename = 'IM-0001-' + "%04d" % zslice + '-ocontour-manual.txt'
+                temp_contour_file = contour_datapath + contour_filename
+                temp_coord_list = parse_contour_file(temp_contour_file)
+                contour = poly_to_mask(polygon=temp_coord_list, width=temp_size[0], height=temp_size[1])
+            else:
+                raise Exception("Invalid argument contour_type.")
+
+            return temp_img, contour
+        except FileNotFoundError:
+            return None, None
+    else:
+        return None, None
+
+
+def parse_data_both(index, zslice):
+    """ return the a pair of 2D image and its contour
+
+    :param index:           the index of files (e.g. 1, 2, 3, 4, 5)
+    :param zslice:          the number of slice in z axis
+    :return:                if (index, zslice) is feasible, return (image, boolean mask);
+                            if not feasible, return (None, None).
     """
 
     patient_id, original_id = link_file(index)
@@ -119,30 +162,43 @@ def parse_data(index, zslice):
             contour_filename = 'IM-0001-' + "%04d" % zslice + '-icontour-manual.txt'
             temp_contour_file = contour_datapath + contour_filename
             temp_coord_list = parse_contour_file(temp_contour_file)
-            temp_contour = poly_to_mask(polygon=temp_coord_list, width=temp_size[0], height=temp_size[1])
+            contour_in = poly_to_mask(polygon=temp_coord_list, width=temp_size[0], height=temp_size[1])
 
-            return temp_img, temp_contour
+            contour_datapath = 'final_data/contourfiles/' + original_id + '/o-contours/'
+            contour_filename = 'IM-0001-' + "%04d" % zslice + '-ocontour-manual.txt'
+            temp_contour_file = contour_datapath + contour_filename
+            temp_coord_list = parse_contour_file(temp_contour_file)
+            contour_out = poly_to_mask(polygon=temp_coord_list, width=temp_size[0], height=temp_size[1])
+
+            return temp_img, contour_in, contour_out
         except FileNotFoundError:
-            return None, None
+            return None, None, None
     else:
-        return None, None
+        return None, None, None
 
 
-def compile_all_data():
+def compile_all_data(contour_type='in'):
     """ A simple function to return a list of feasible pairs (index, zslice) in the data.
         It searches through all combinations of (index, zslice) brutally.
 
-    :param index:       the index of files (e.g. 3)
-    :param zslice:      the number of slices in z axis (e.g. 120)
-    :return:            a list of feasible tuple pairs (index, zslice) in the data
+    :param contour_type:    type of contour to output ('in', 'out', or 'both')
+    :return:                a list of feasible tuple pairs (index, zslice) in the data
     """
 
-    image_all = []
-    for i in range(1, 5+1):  # there are five folders in our dataset
-        for j in range(1, 260+1):   # the maximal zslice is 260
-            img, contour = parse_data(index=i, zslice=j)
-            if contour is not None:
-                image_all.append((i, j))
+    data_all = []
 
-    return image_all
+    for i in range(1, 5 + 1):  # there are five folders in our dataset
+        for j in range(1, 260 + 1):  # the maximal zslice is 260
+            if contour_type is 'both':
+                _, contour_in, contour_out = parse_data_both(index=i, zslice=j)
+                if contour_out is not None:
+                    data_all.append((i, j))
+            elif contour_type in ('in', 'out'):
+                _, contour = parse_data(index=i, zslice=j, contour_type=contour_type)
+                if contour is not None:
+                    data_all.append((i, j))
+            else:
+                raise Exception("Invalid argument contour_type.")
+    return data_all
+
 

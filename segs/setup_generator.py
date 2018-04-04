@@ -2,7 +2,7 @@ import numpy as np
 from parsing import parse_data
 
 
-def generator_data(batch_size, image_size, data_pool):
+def generator_data(batch_size, image_size, data_pool, contour_type='in'):
     """ a generator for generating batches of training data
 
     :param batch_size:      size of each batch (e.g. 8)
@@ -11,19 +11,19 @@ def generator_data(batch_size, image_size, data_pool):
     :return:                batch of training data
     """
     while True:
-        [x, y] = random_image_sampling(batch_size=batch_size, image_size=image_size, data_pool=data_pool)
+        [x, y] = random_image_sampling(batch_size=batch_size, image_size=image_size, data_pool=data_pool, contour_type=contour_type)
 
         yield (x, y)
 
 
-def random_image_sampling(batch_size, image_size, data_pool):
+def random_image_sampling(batch_size, image_size, data_pool, contour_type='in'):
     data_pool_size = len(data_pool)
     selected_item = np.random.choice(a=range(0, data_pool_size), size=batch_size)
     batch_x_img = np.zeros(shape=(batch_size,) + image_size + (1,))  # one channel per image
     batch_y_mask = np.zeros(shape=(batch_size,) + image_size + (2,))  # two channels per mask
     for i in range(0, batch_size):
         index, zslice = data_pool[selected_item[i]]
-        img, mask = parse_data(index=index, zslice=zslice)
+        img, mask = parse_data(index=index, zslice=zslice, contour_type=contour_type)
         batch_x_img[i, :, :, 0] = img
         batch_y_mask[i, :, :, 0] = mask
         batch_y_mask[i, :, :, 1] = ~mask
