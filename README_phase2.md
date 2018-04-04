@@ -39,6 +39,10 @@ mean best error percentage is 0.120835845404
 mean error percentage using Otsu algorithm is 0.345768146028
 ```
 
+In conclusion, we think using a thresholding scheme to separate myocardium and blood pool is possible, as shown by the results that the best error percentage is around 12%. However, the implementation needs further deliberation. Ostu method, a simple algorithm available in open-source toolkits, may not generate satisfying results.
+
 #### 2) Do you think that any other heuristic (non-machine learning)-based approaches, besides simple thresholding, would work in this case? Explain
 
-Based on the shape of the myocardium, my guess is that a level-set method may be able to generate good results. 
+Based on the shape of the myocardium, my guess is that a level-set method may be able to generate good results. The smooth contour of the endocardium can be utilized as a shape prior to guide heuristic methods.
+
+
