@@ -21,7 +21,7 @@ First, we design a metric called error percentage to measure how accurate the i-
 
 **Eq.1: error_pct = N_error / N_total **
 
-Given an arbitrary threshold T to classify myocardium and blood pool for each image, we can calculate the error percentage associated with that threshold T. Hence, given an image and knowing the ground truth classification of the two classes, we can calculate a curve error_pct(T) as a function of T, and calculate the minimal error percentage. This is a theoretical lower bound of error percentage, namely, the best possible solution we can get using a single thresholding scheme.
+Given an arbitrary global threshold T to classify myocardium and blood pool for each image, we can calculate the error percentage associated with that threshold T. Hence, given an image and knowing the ground truth classification of the two classes, we can calculate a curve error_pct(T) as a function of T, and calculate the minimal error percentage. This is a theoretical lower bound of error percentage, namely, the best possible solution we can get using a single thresholding scheme.
 
 **Eq.2: error_pct_best = min( error_pct(T) )**
 
@@ -40,7 +40,7 @@ mean best error percentage is 0.120835845404
 mean error percentage using Otsu algorithm is 0.345768146028
 ```
 
-In conclusion, we think using a thresholding scheme to separate myocardium and blood pool is possible, as shown by the results that the best error percentage is around 12%. However, the implementation needs further deliberation. Ostu method, a simple algorithm available in open-source toolkits, may not generate satisfying results.
+In conclusion, we think using a global thresholding scheme to separate myocardium and blood pool is possible, as shown by the results that the best error percentage is around 12%. However, the implementation needs further deliberation. Ostu method, a simple algorithm available in open-source toolkits, may not generate satisfying results (35%).
 
 #### 2) Do you think that any other heuristic (non-machine learning)-based approaches, besides simple thresholding, would work in this case? Explain
 
