@@ -10,6 +10,9 @@ from experiment_threshold import find_min_errorpct
 
 # -------------------------------------------------------------------- #
 def main():
+    ''' a function to examine the best possible thresholds in all images
+        and compare it with results from Ostu's method
+    '''
     time_start = time.time()
 
     img_size = (256, 256)

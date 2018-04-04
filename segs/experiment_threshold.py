@@ -7,6 +7,9 @@ from parsing import compile_all_data, parse_data_both
 
 # -------------------------------------------------------------------- #
 def main():
+    ''' a function to experiment the thresholding scheme.
+        It compares the best possible threshold value with the one generated from Ostu's method.
+    '''
     img_size = (256, 256)
 
     # resultpath = 'model/'  # a directory to store model and some results

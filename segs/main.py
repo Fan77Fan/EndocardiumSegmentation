@@ -26,7 +26,7 @@ def main():
 
     n_class = 2  # number of classes for classification
 
-    contour_type = 'out'
+    contour_type = 'out'  # to control outputting i-contour or o-contour
     data_list = compile_all_data(contour_type=contour_type)  # a list feasible pairs (index, zslize)
 
     # -------------------------------------------------------------------- #
