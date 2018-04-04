@@ -32,9 +32,9 @@ This is an illustration of histograms of the two classes and the error percentag
   ![Alt text](segs/model/experiment_hist_thresh_error.png?raw=true "Title")
 
 We also tried a simple thresholding scheme using Otsu's method (https://en.wikipedia.org/wiki/Otsu%27s_method), implemented using toolkit **skimage.filters.threshold_otsu**. The method finds a threshold that minimizes a weighted sum of intra-class variance. As in this example, the error percentage is 29%. A result of this method is illustrated here:
-  ![Alt text](segs/model/example_masks_ostu.png?raw=true "Title")
+  ![Alt text](segs/model/example_masks_otsu.png?raw=true "Title")
 
-For a final comparison, we computed the error percentage in all images, both the theoretical lower bound __error_pct_best__ and the error percentage from the Ostu method. The result is 
+For a final comparison, we computed the error percentage in all images, both the theoretical lower bound __error_pct_best__ and the error percentage from the Otsu method. The result is 
 ```
 mean best error percentage is 0.120835845404
 mean error percentage using Otsu algorithm is 0.345768146028
