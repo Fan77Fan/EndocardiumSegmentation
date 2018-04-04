@@ -19,7 +19,7 @@ The last change is to add 'contour_type' input in __compile_all_data__, __setup_
 
 First, we design a metric called error percentage to measure how accurate the i-contour estimation is. It is defined as the number of misclassification pixels over total number of pixels inside the region of interest, namely o-contour mask.
 
-**Eq.1: error_pct = N_error / N_total **
+**Eq.1: error_pct = N_error / N_total**
 
 Given an arbitrary global threshold T to classify myocardium and blood pool for each image, we can calculate the error percentage associated with that threshold T. Hence, given an image and knowing the ground truth classification of the two classes, we can calculate a curve error_pct(T) as a function of T, and calculate the minimal error percentage. This is a theoretical lower bound of error percentage, namely, the best possible solution we can get using a single thresholding scheme.
 
